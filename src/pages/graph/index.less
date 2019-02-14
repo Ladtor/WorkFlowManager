@@ -1,0 +1,62 @@
+:global {
+  #root, #root > div {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  .ant-card {
+    height: 100%;
+
+    .ant-card-body {
+      height: ~"calc(100% - 48px)";
+      overflow: scroll;
+    }
+  }
+}
+
+.normal {
+  background: #F2798D;
+}
+
+.editor {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.editorHd {
+  padding: 8px;
+  border: 1px solid #E6E9ED;
+}
+
+.editorBd {
+  flex: 1;
+}
+
+.editorSidebar,
+.editorContent {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.editorSidebar {
+  background: #FAFAFA;
+
+  &:first-child {
+    border-right: 1px solid #E6E9ED;
+  }
+
+  &:last-child {
+    border-left: 1px solid #E6E9ED;
+  }
+}
+
+.koni {
+  flex: 1;
+}
+
+.detailPanel {
+  height: ~"calc(100% - 279px)";
+}
