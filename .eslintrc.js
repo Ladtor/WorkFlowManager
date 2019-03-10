@@ -40,6 +40,7 @@ module.exports = {
     'no-param-reassign': 0,
     'react/jsx-no-bind': 0,
     'arrow-body-style': 0,
+    'no-console': 0,
   },
   settings: {
     polyfills: ['fetch', 'promises', 'url'],

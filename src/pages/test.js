@@ -1,37 +1,37 @@
 import React from 'react';
-import { Input } from 'antd';
-import CronEditor from 'antd-cron-editor';
+import SockJsClient from 'react-stomp';
+import { Button } from "antd";
 
 class Test extends React.Component {
-  state = {
-    value: '0-2 32,2 * * * ?',
-    inputText: '0-2 32,2 * * * ?',
-  };
 
-  handleChange = (cronText) => {
-    console.log(cronText);
-    this.setState({ value: cronText, inputText: cronText });
-  };
-
-  handleInputChange = ({ target: { value: inputText } }) => {
-    this.setState({ inputText });
-  };
-
-  handlePressEnter = ({ target: { value: inputText } }) => {
-    this.setState({ value: inputText, inputText });
+  handleClick = () => {
+    this.client.sendMessage('/test', JSON.stringify({ fourTuple: { serialNo: '123' }, a: 'a' }));
   };
 
   render() {
-
-    const { value, inputText } = this.state;
-
     return (
       <div>
-        <Input onChange={this.handleInputChange} onPressEnter={this.handlePressEnter} value={inputText} />
-        <CronEditor onChange={this.handleChange} span={2} value={value} />
+        <Button onClick={this.handleClick} />
+        <SockJsClient
+          url="http://localhost:8000/api"
+          topics={['/test']}
+          onConnect={(msg) => {
+            console.log("connect", msg);
+          }}
+          onDisconnect={(msg) => {
+            console.log("disconnect", msg);
+          }}
+          onMessage={(msg) => {
+            console.log("message", msg);
+          }}
+          ref={(client) => {
+            this.client = client;
+            console.log(client);
+          }}
+        />
       </div>
     );
-  };
+  }
 }
 
 export default Test;

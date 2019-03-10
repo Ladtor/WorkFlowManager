@@ -40,7 +40,9 @@
     "react-document-title": "^2.0.3",
     "react-dom": "16.7.0",
     "react-media": "^1.8.0",
-    "umi-request": "^1.0.0"
+    "react-stomp": "^4.1.0",
+    "umi-request": "^1.0.0",
+    "yarn": "^1.13.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",

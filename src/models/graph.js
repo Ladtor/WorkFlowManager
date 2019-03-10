@@ -1,8 +1,8 @@
 import pathToRegexp from 'path-to-regexp';
 import { routerRedux } from 'dva/router';
 import { get, getExecuteLog } from '@/services/workflows';
-import { execute, success } from '@/services/graph';
 import { taskList } from '@/services/tasks';
+import { message } from "antd";
 
 export default {
   namespace: 'graph',
@@ -11,9 +11,31 @@ export default {
     saveState(state, { payload }) {
       return { ...state, ...payload };
     },
+    edgeLog(state, { payload }) {
+      const { edgeLogList = [], serialNo, version, runVersion, koni } = state;
+      if (serialNo === payload.serialNo && version === payload.version && runVersion === payload.runVersion) {
+        edgeLogList.push(payload);
+      }
+      return { ...state, edgeLogList };
+    },
+    nodeLog(state, { payload }) {
+      const { nodeLogList = [], serialNo, version, runVersion } = state;
+      if (serialNo === payload.serialNo && version === payload.version && runVersion === payload.runVersion) {
+        nodeLogList.push(payload);
+      }
+      return { ...state, nodeLogList };
+    },
+    connect(state) {
+      message.success("已连接");
+      return { ...state, connected: true }
+    },
+    disConnect(state) {
+      message.warn("已断开");
+      return { ...state, connected: false }
+    }
   },
   effects: {
-    * get({ payload: { serialNo, version, runVersion }}, { call, put }) {
+    * get({ payload: { serialNo, version, runVersion } }, { call, put }) {
       const response = yield call(get, serialNo, version, runVersion);
       if (response) {
         yield put({
@@ -23,8 +45,8 @@ export default {
       }
     },
     * getExecuteLog({ payload: serialNo }, { select, call, put }) {
-      const state = yield select(state=> state.graph);
-      if(serialNo !== undefined && state.executeLog !== undefined)return;
+      const state = yield select(state => state.graph);
+      if (serialNo !== undefined && state.executeLog !== undefined) return;
       serialNo = serialNo || state.serialNo;
       const response = yield call(getExecuteLog, serialNo);
       if (response) {
@@ -34,38 +56,40 @@ export default {
             executeLog: response
           }
         });
-        if(response && response.length > 0 ){
-          const executeLog = response[0];
-          const {version, runVersion} = executeLog;
-          yield put(
-            routerRedux.replace(`/graph/${serialNo}/${version}/${runVersion}`)
-          )
-        }
       }
     },
-    * nodeExecute({ payload: value }, { select, call, put }) {
-      const graph = yield select(state => state.graph);
-      const { executeId: nodeId, serialNo, version, runVersion } = graph;
-      yield call(execute, serialNo, version, runVersion, nodeId, value);
-      const response = yield call(get, serialNo, version, runVersion);
-      if (response) {
-        yield put({
-          type: 'saveState',
-          payload: response,
-        });
+    * replace(_, { select, put }) {
+      const { executeLog } = yield select(state => state.graph);
+      if (executeLog && executeLog.length > 0) {
+        const { serialNo, version, runVersion } = executeLog[0];
+        yield put(
+          routerRedux.replace(`/graph/${serialNo}/${version}/${runVersion}`)
+        )
       }
     },
-    * nodeSuccess({ payload: value }, { select, call, put }) {
+    * nodeExecute({ payload: { client, params } }, { select }) {
       const graph = yield select(state => state.graph);
-      const { successId: nodeId, serialNo, version, runVersion } = graph;
-      yield call(success, serialNo, version, runVersion, nodeId, value);
-      const response = yield call(get, serialNo, version, runVersion);
-      if (response) {
-        yield put({
-          type: 'saveState',
-          payload: response,
-        });
-      }
+      const { executeId: nodeId, serialNo, version, runVersion, connected } = graph;
+      if (connected)
+        client.sendMessage(`/execute/${serialNo}/${version}/${runVersion}/${nodeId}`, params);
+      else
+        message.error("连接已断开");
+    },
+    * nodeSuccess({ payload: { client, params } }, { select }) {
+      const graph = yield select(state => state.graph);
+      const { successId: nodeId, serialNo, version, runVersion, connected } = graph;
+      if (connected)
+        client.sendMessage(`/success/${serialNo}/${version}/${runVersion}/${nodeId}`, params);
+      else
+        message.error("连接已断开");
+    },
+    * nodeFail({ payload: { client, params } }, { select }) {
+      const graph = yield select(state => state.graph);
+      const { successId: nodeId, serialNo, version, runVersion, connected } = graph;
+      if (connected)
+        client.sendMessage(`/fail/${serialNo}/${version}/${runVersion}/${nodeId}`, params);
+      else
+        message.error("连接已断开");
     },
     * getTasks(_, { call, put }) {
       const response = yield call(taskList);
@@ -75,7 +99,7 @@ export default {
           tasks: response,
         },
       });
-    },
+    }
   },
   subscriptions: {
     setup({ dispatch, history }) {
@@ -85,10 +109,14 @@ export default {
           dispatch({
             type: 'getExecuteLog',
             payload: match[1],
+          }).then(() => {
+            dispatch({
+              type: 'replace'
+            })
           });
         }
         match = pathToRegexp('/graph/:serialNo/:version/:runVersion').exec(pathname);
-        if( match) {
+        if (match) {
           dispatch({
             type: 'getExecuteLog',
             payload: match[1],

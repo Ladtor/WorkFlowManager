@@ -1,8 +1,9 @@
 import React from 'react';
 import { routerRedux } from 'dva/router';
 import { connect } from 'dva';
-import { Col, Row, Card, Icon } from 'antd';
+import { Col, Row, Card, Icon, message } from 'antd';
 import GGEditor, { Koni } from 'gg-editor';
+import SockJsClient from 'react-stomp';
 import EditorMinimap from '@/components/Koni/EditorMinimap';
 import { GraphModel } from '@/components/Koni/Node';
 import { AddCommand, CopyAdjacentCommand, CopyCommand, DeleteCommand } from '@/components/Koni/Command';
@@ -12,10 +13,13 @@ import PopInputModal from '@/components/PopInputModal';
 import { isJSON } from '@/utils/utils';
 import styles from './index.less';
 
+let koni;
+let client;
 const Graph = ({ setting, graph: props, dispatch }) => {
   const { edgeStatusColor, nodeStatusColor } = setting;
   const { graph, resultModalVisible, paramsModalVisible, executeLog, runVersion, edgeLogList, nodeLogList, serialNo, tasks } = props;
-
+  const NODE_LOG = '/nodeLog';
+  const EDGE_LOG = '/edgeLog';
   const config = {
     enable: () => false,
   };
@@ -43,12 +47,13 @@ const Graph = ({ setting, graph: props, dispatch }) => {
         nodeLogMap[log.nodeId] = log;
         return log;
       });
-      (data.nodes || []).map(node => {
+      data.nodes = (data.nodes || []).map(node => {
         if(nodeLogMap[node.id]){
           node.statusColor = nodeStatusColor[nodeLogMap[node.id].status];
           node.runParams = nodeLogMap[node.id].params;
           node.result = nodeLogMap[node.id].result;
         }
+        if(koni)koni.update(node.id, {...node});
         return node;
       });
     }
@@ -94,19 +99,37 @@ const Graph = ({ setting, graph: props, dispatch }) => {
     })
   };
 
-  const handleParams = (value) => {
+  const handleParams = (params) => {
     dispatch({
       type: 'graph/nodeExecute',
-      payload: value,
+      payload: {
+        client,
+        params
+      },
     }).then(()=>{
       handleHideParamsModal();
     });
   };
 
-  const handleResult = (value) => {
+  const handleResult = (params) => {
     dispatch({
       type: 'graph/nodeSuccess',
-      payload: value,
+      payload: {
+        client,
+        params
+      },
+    }).then(()=>{
+      handleHideResultModal();
+    });
+  };
+
+  const handleFail = (params) => {
+    dispatch({
+      type: 'graph/nodeFail',
+      payload: {
+        client,
+        params
+      },
     }).then(()=>{
       handleHideResultModal();
     });
@@ -131,13 +154,55 @@ const Graph = ({ setting, graph: props, dispatch }) => {
     },
   };
 
+  const handleStompMessage = (msg, topic) => {
+    switch (topic) {
+      case NODE_LOG:
+        dispatch({
+          type: 'graph/nodeLog',
+          payload: msg
+        });
+        break;
+      case EDGE_LOG:
+        dispatch({
+          type: 'graph/edgeLog',
+          payload: msg
+        });
+        break;
+      default:
+        console.log("topic not found ", topic);
+    }
+  };
+
+  const handleConnect = () => {
+    dispatch({
+      type: 'graph/connect'
+    });
+  };
+
+  const handleDisConnect = () => {
+    dispatch({
+      type: 'graph/disConnect'
+    });
+  };
+
+  function setKoni(ggEditor) {
+    if(ggEditor){
+      koni = ggEditor.editor.getCurrentPage();
+    }
+  }
+
+  function setClient(_client) {
+    client = _client;
+  }
+
   fillLog(graph, edgeLogList, nodeLogList);
   return (
     <GGEditor
       className={styles.editor}
       onBeforeCommandExecute={({ command }) => {
-        console.log('command', command);
+        console.debug('command', command);
       }}
+      ref={setKoni}
     >
       <Row type="flex" className={styles.editorBd}>
         <Col span={3} className={styles.editorSidebar}>
@@ -152,7 +217,7 @@ const Graph = ({ setting, graph: props, dispatch }) => {
           />
         </Col>
         <Col span={6} className={styles.editorSidebar}>
-          <GraphDetailPanel onExecute={handleExecute} onSuccess={handleSuccess} className={styles.detailPanel} tasks={tasks}/>
+          <GraphDetailPanel onExecute={handleExecute} onSuccess={handleSuccess} className={styles.detailPanel} tasks={tasks} />
           <EditorMinimap />
         </Col>
       </Row>
@@ -165,6 +230,15 @@ const Graph = ({ setting, graph: props, dispatch }) => {
 
       <PopInputModal title='执行参数' onChange={handleParams} visible={paramsModalVisible} onCancel={handleHideParamsModal} rules={[jsonRule]} />
       <PopInputModal title='结果参数' onChange={handleResult} visible={resultModalVisible} onCancel={handleHideResultModal} rules={[jsonRule]} />
+
+      <SockJsClient
+        url="/api/stomp"
+        topics={[NODE_LOG, EDGE_LOG]}
+        onConnect={handleConnect}
+        onDisconnect={handleDisConnect}
+        onMessage={handleStompMessage}
+        ref={setClient}
+      />
     </GGEditor>
   );
 };
