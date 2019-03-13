@@ -32,8 +32,8 @@ export async function update(serialNo, version, graph) {
   });
 }
 
-export async function del(id) {
-  return request(`/workflow/${id}`, {
+export async function del(serialNo) {
+  return request(`/workflow/${serialNo}`, {
     method: 'DELETE',
   });
 }

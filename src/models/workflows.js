@@ -1,5 +1,4 @@
-import { message } from 'antd';
-import { del, get, list, save, execute, cron, cancel } from '@/services/workflows';
+import { del, list, save, execute, cron, cancel } from '@/services/workflows';
 
 export default {
   namespace: 'workflows',
@@ -8,57 +7,34 @@ export default {
     current: {},
   },
   reducers: {
-    saveList(state, { payload: list }) {
-      return { ...state, list };
-    },
-    saveOne(state, { payload: current }) {
-      return { ...state, current };
+    saveState(state, { payload }) {
+      return { ...state, ...payload };
     },
   },
   effects: {
-    * get({ payload: { serialNo, version } }, { call, put }) {
-      const response = yield call(get, serialNo, version);
-      yield put({
-        type: 'saveOne',
-        payload: response,
-      });
-    },
     * list({ payload }, { call, put }) {
       const response = yield call(list);
       yield put({
-        type: 'saveList',
-        payload: response,
+        type: 'saveState',
+        payload: {
+          list: response
+        },
       });
     },
-    * save({ payload: workflow }, { call, put }) {
-      const response = yield call(save, workflow);
+    * save({ payload: workflow }, { call }) {
+      return yield call(save, workflow);
     },
-    * delete({ payload: id }, { call, put }) {
-      const response = yield call(del, id);
-      yield put({
-        type: 'list',
-      });
+    * delete({ payload: serialNo }, { call }) {
+      return yield call(del, serialNo);
     },
-    * execute({ payload: { serialNo, params } }, { call, put }) {
-      const response = yield call(execute, serialNo, params);
-      if(response != null){
-        message.success('执行成功');
-        yield put({
-          type: 'list',
-        })
-      }
+    * execute({ payload: { serialNo, params } }, { call }) {
+      return yield call(execute, serialNo, params);
     },
-    * cron({ payload: { serialNo, cronText } }, { call, put }) {
-      const response = yield call(cron, serialNo, cronText);
-      if(response != null){
-        message.success('执行成功');
-        yield put({
-          type: 'list',
-        })
-      }
+    * cron({ payload: { serialNo, cronText } }, { call }) {
+      return yield call(cron, serialNo, cronText);
     },
-    * cancel({ payload: { serialNo }}, { call, put}) {
-      yield call(cancel, serialNo);
+    * cancel({ payload: { serialNo } }, { call }) {
+      return yield call(cancel, serialNo);
     }
   },
   subscriptions: {
