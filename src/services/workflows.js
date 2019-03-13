@@ -4,7 +4,7 @@ export async function get(serialNo, version, runVersion) {
   let url = `/workflow/${serialNo}`;
   if (version)
     url = `${url}/${version}`;
-  if(runVersion)
+  if (runVersion)
     url = `${url}/${runVersion}`;
 
   return request(url);
@@ -47,4 +47,17 @@ export async function execute(serialNo, params) {
 
 export async function getExecuteLog(serialNo) {
   return request(`/workflow/executeLog/${serialNo}`);
+}
+
+export async function cron(serialNo, cronText) {
+  return request(`/workflow/cron/${serialNo}}`, {
+    method: 'POST',
+    body: cronText
+  });
+}
+
+export async function cancel(serialNo) {
+  return request(`/workflow/cron/${serialNo}`, {
+    method: 'DELETE'
+  });
 }

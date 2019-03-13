@@ -7,14 +7,14 @@ import { isJSON } from '@/utils/utils';
 class WorkFlowList extends React.Component {
   state = {};
 
-  handleShowModal = () => {
+  handleShowModal = (serialNo) => {
     const visible = true;
-    this.setState({ visible });
+    this.setState({ visible, serialNo });
   };
 
   handleHideModal = () => {
     const visible = false;
-    this.setState({ visible });
+    this.setState({ visible, serialNo: null });
   };
 
   handlePreRun = (serialNo) => {
@@ -32,9 +32,22 @@ class WorkFlowList extends React.Component {
     this.setState({ popVisible: false });
   };
 
+  handleCronChange = (cronText) => {
+    this.setState({ cronText });
+  };
+
+  handleRunCron = () => {
+    const { serialNo, cronText } = this.state;
+    const { onCron } = this.props;
+    if(cronText){
+      onCron && onCron(serialNo, cronText);
+      this.handleHideModal();
+    }
+  };
+
   render() {
-    const { workflows, onDelete, onEdit, onView } = this.props;
-    const { visible, popVisible } = this.state;
+    const { workflows, onDelete, onEdit, onView, onCancel } = this.props;
+    const { visible, popVisible, cronText } = this.state;
     const jsonRule = {
       message: '请使用 json 格式',
       validator: (rule, value, callback) => {
@@ -71,11 +84,13 @@ class WorkFlowList extends React.Component {
         <span>
           <a href="javascript:" onClick={this.handlePreRun.bind(this, record.serialNo)}>Run</a>
           <Divider type="vertical" />
-          <a href="javascript:" onClick={this.handleShowModal}>Cron</a>
+          <a href="javascript:" onClick={this.handleShowModal.bind(this, record.serialNo)}>Cron</a>
           <Divider type="vertical" />
           <a href="javascript:" onClick={() => onView(record.serialNo)}>View</a>
           <Divider type="vertical" />
           <a href="javascript:" onClick={() => onEdit(record.serialNo)}>Edit</a>
+          <Divider type="vertical" />
+          <a href="javascript:" onClick={() => onCancel(record.serialNo)}>Cancel</a>
           <Divider type="vertical" />
           <Popconfirm title="Delete?" onConfirm={() => onDelete(record.id)}>
             <a href="javascript:">Delete</a>
@@ -90,8 +105,11 @@ class WorkFlowList extends React.Component {
           columns={columns}
           rowKey={record => record.id}
         />
-        <Modal visible={visible} onCancel={this.handleHideModal}>
-          <CronEditor span={3} defaultValue='0-2 * * * * ?' />
+        <Modal visible={visible} onCancel={this.handleHideModal} onOk={this.handleRunCron}>
+          <div>
+            <span>{cronText}</span>
+          </div>
+          <CronEditor span={3} defaultValue='0-2 * * * * ?' value={cronText} onChange={this.handleCronChange} />
         </Modal>
         <PopInputModal
           visible={popVisible}

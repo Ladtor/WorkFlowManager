@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { del, get, list, save, execute } from '@/services/workflows';
+import { del, get, list, save, execute, cron, cancel } from '@/services/workflows';
 
 export default {
   namespace: 'workflows',
@@ -48,6 +48,18 @@ export default {
         })
       }
     },
+    * cron({ payload: { serialNo, cronText } }, { call, put }) {
+      const response = yield call(cron, serialNo, cronText);
+      if(response != null){
+        message.success('执行成功');
+        yield put({
+          type: 'list',
+        })
+      }
+    },
+    * cancel({ payload: { serialNo }}, { call, put}) {
+      yield call(cancel, serialNo);
+    }
   },
   subscriptions: {
     setup({ dispatch, history }) {
