@@ -9,5 +9,5 @@ export default {
   'menu.analysis': '统计',
   'menu.editor': '编辑器',
   'menu.workflows': '工作流',
-  'menu.taskNodes': '任务节点',
+  'menu.taskApplication': '任务应用',
 };

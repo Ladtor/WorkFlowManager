@@ -1,7 +1,7 @@
-import { queryTaskNodes, queryTasks, saveTask } from '@/services/taskNodes';
+import { queryTaskApplications, queryTasks, saveTask, saveApplication } from '@/services/taskApplication';
 
 export default {
-  namespace: 'taskNodes',
+  namespace: 'taskApplication',
   state: {
     list: [],
     health: {},
@@ -10,9 +10,9 @@ export default {
   },
   effects: {
     * fetch(_, { call, put }) {
-      const response = yield call(queryTaskNodes);
+      const response = yield call(queryTaskApplications);
       yield put({
-        type: 'saveTaskNodes',
+        type: 'saveTaskApplications',
         payload: response,
       });
     },
@@ -27,16 +27,19 @@ export default {
       });
     },
     * addTask({ payload }, { call, put, select }) {
-      const { name } = yield select(state => state.taskNodes);
+      const { name } = yield select(state => state.taskApplication);
       const response = yield call(saveTask, name, payload);
       yield put({
         type: 'fetchTasks',
         payload: name,
       });
     },
+    * addApplication({ payload }, { call }) {
+      return yield call(saveApplication, payload);
+    }
   },
   reducers: {
-    saveTaskNodes(state, action) {
+    saveTaskApplications(state, action) {
       return {
         ...state,
         list: action.payload,
@@ -62,7 +65,7 @@ export default {
   subscriptions: {
     setup({ dispatch, history }) {
       history.listen(({ pathname }) => {
-        if (pathname === '/taskNodes') {
+        if (pathname === '/taskApplication') {
           dispatch({
             type: 'fetch',
           });

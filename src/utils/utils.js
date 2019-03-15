@@ -20,3 +20,10 @@ export function isJSON(str) {
   }
   return false;
 }
+
+export function getSetState(dispatch, modelName){
+  return (payload) => dispatch({
+    type: `${modelName}/saveState`,
+    payload
+  });
+}

@@ -37,7 +37,7 @@ const errorHandler = error => {
       description: errortext,
     });
   };
-  response.json().then(({message}) => resolve(message)).catch(()=>resolve());
+  response.json().then(({ message }) => resolve(message)).catch(() => resolve());
 };
 
 /**
@@ -49,4 +49,56 @@ const request = extend({
   headers: { 'Content-Type': 'application/json;charset=UTF-8' },
   prefix: '/api',
 });
+
+const get = (url) => request(url);
+const del = (url) => request(url, {
+  method: 'DELETE'
+});
+const post = (url, body) => request(url, {
+  method: 'POST',
+  body: JSON.stringify(body)
+});
+const put = (url, body) => request(url, {
+  method: 'PUT',
+  body: JSON.stringify(body)
+});
+const build = (baseUrl) => {
+  const buildUrl = (url) => {
+    if (url) return baseUrl + url;
+    return baseUrl;
+  };
+
+  return {
+    get: (url) => {
+      return get(buildUrl(url));
+    },
+    del: (url) => {
+      return del(buildUrl(url));
+    },
+    post: (url, params) => {
+      if (params === undefined) {
+        if (typeof url === typeof {}) {
+          params = url;
+          url = undefined;
+        } else {
+          params = {}
+        }
+      }
+      return post(buildUrl(url), params);
+    },
+    put: (url, params) => {
+      if (params === undefined) {
+        if (typeof url === typeof {}) {
+          params = url;
+          url = undefined;
+        } else {
+          params = {}
+        }
+      }
+      return put(buildUrl(url), params);
+    }
+  }
+};
+
 export default request;
+export { get, del, post, put, build }

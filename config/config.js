@@ -112,10 +112,10 @@ export default {
           component: './workflows',
         },
         {
-          name: 'taskNodes',
+          name: 'taskApplication',
           icon: 'smile',
-          path: '/taskNodes',
-          component: './taskNodes',
+          path: '/taskApplication',
+          component: './taskApplication',
         },
       ],
     },
