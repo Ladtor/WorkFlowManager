@@ -9,11 +9,3 @@ export async function queryTaskApplications() {
 export async function saveApplication(application) {
   return post(application);
 }
-
-export async function queryTasks(name) {
-  return get(`/${name}`);
-}
-
-export async function saveTask(name, task) {
-  return post(`/${name}`, task);
-}

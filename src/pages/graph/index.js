@@ -16,10 +16,11 @@ import styles from './index.less';
 let koni;
 let client;
 const Graph = ({ setting, graph: props, dispatch }) => {
-  const { edgeStatusColor, nodeStatusColor } = setting;
-  const { graph, resultModalVisible, paramsModalVisible, executeLog, runVersion, edgeLogList, nodeLogList, serialNo, tasks } = props;
+  const { edgeStatusColor, nodeStatusColor, stompUrl } = setting;
+  const { graph, resultModalVisible, paramsModalVisible, executeLog, runVersion, edgeLogList, nodeLogList, serialNo, version, tasks } = props;
   const NODE_LOG = '/nodeLog';
   const EDGE_LOG = '/edgeLog';
+  const EXECUTE_LOG = '/executeLog';
   const config = {
     enable: () => false,
   };
@@ -141,9 +142,20 @@ const Graph = ({ setting, graph: props, dispatch }) => {
     );
   };
 
-  const handleRefreshLog = () => {
+  const handleRefreshExecuteLog = () => {
     dispatch({
       type: 'graph/getExecuteLog'
+    })
+  };
+
+  const handleRefreshNodeLog = () => {
+    dispatch({
+      type: 'graph/get',
+      payload: {
+        serialNo,
+        version,
+        runVersion
+      }
     })
   };
 
@@ -168,6 +180,11 @@ const Graph = ({ setting, graph: props, dispatch }) => {
           payload: msg
         });
         break;
+      case EXECUTE_LOG:
+        dispatch({
+          type: 'graph/executeLog',
+          payload: msg
+        });
       default:
         console.log("topic not found ", topic);
     }
@@ -177,6 +194,7 @@ const Graph = ({ setting, graph: props, dispatch }) => {
     dispatch({
       type: 'graph/connect'
     });
+    handleRefreshNodeLog();
   };
 
   const handleDisConnect = () => {
@@ -206,7 +224,7 @@ const Graph = ({ setting, graph: props, dispatch }) => {
     >
       <Row type="flex" className={styles.editorBd}>
         <Col span={3} className={styles.editorSidebar}>
-          <Card title='运行记录' bordered={false} extra={<a onClick={handleRefreshLog}><Icon type="sync" /></a>}>
+          <Card title='运行记录' bordered={false} extra={<a onClick={handleRefreshExecuteLog}><Icon type="sync" /></a>}>
             <ExecuteLogList data={executeLog} active={runVersion} onClick={handleExecuteLogClick} />
           </Card>
         </Col>
@@ -232,8 +250,8 @@ const Graph = ({ setting, graph: props, dispatch }) => {
       <PopInputModal title='结果参数' onChange={handleResult} visible={resultModalVisible} onCancel={handleHideResultModal} rules={[jsonRule]} />
 
       <SockJsClient
-        url="/api/stomp"
-        topics={[NODE_LOG, EDGE_LOG]}
+        url={stompUrl}
+        topics={[NODE_LOG, EDGE_LOG, EXECUTE_LOG]}
         onConnect={handleConnect}
         onDisconnect={handleDisConnect}
         onMessage={handleStompMessage}

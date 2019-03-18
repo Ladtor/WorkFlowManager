@@ -14,16 +14,41 @@ export default {
     edgeLog(state, { payload }) {
       const { edgeLogList = [], serialNo, version, runVersion, koni } = state;
       if (serialNo === payload.serialNo && version === payload.version && runVersion === payload.runVersion) {
-        edgeLogList.push(payload);
+        const edgeLogs = edgeLogList.filter(edgeLog => edgeLog.edgeId == payload.edgeId);
+        if (edgeLogs > 0) {
+          Object.assign(edgeLogs[0], payload);
+        }else {
+          edgeLogList.push(payload);
+        }
+        return { ...state};
       }
-      return { ...state, edgeLogList };
+      return state;
     },
     nodeLog(state, { payload }) {
       const { nodeLogList = [], serialNo, version, runVersion } = state;
       if (serialNo === payload.serialNo && version === payload.version && runVersion === payload.runVersion) {
-        nodeLogList.push(payload);
+        const nodeLogs = nodeLogList.filter(nodeLog => nodeLog.nodeId === payload.nodeId);
+        if (nodeLogs.length > 0) {
+          Object.assign(nodeLogs[0], payload);
+        } else {
+          nodeLogList.push(payload);
+        }
+        return { ...state };
       }
-      return { ...state, nodeLogList };
+      return state;
+    },
+    executeLog(state, { payload }) {
+      const { executeLog = [], serialNo, version } = state;
+      if (serialNo === payload.serialNo && version === payload.version) {
+        const result = executeLog.filter(log => log.runVersion === payload.runVersion);
+        if(result.length > 0){
+          Object.assign(result[0], payload);
+        }else {
+          result.unshift(payload);
+        }
+        return { ...state};
+      }
+      return state;
     },
     connect(state) {
       message.success("已连接");

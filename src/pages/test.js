@@ -13,7 +13,7 @@ class Test extends React.Component {
       <div>
         <Button onClick={this.handleClick} />
         <SockJsClient
-          url="http://localhost:8000/api"
+          url="http://localhost:8000/api/stomp"
           topics={['/test']}
           onConnect={(msg) => {
             console.log("connect", msg);

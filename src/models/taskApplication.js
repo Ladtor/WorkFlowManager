@@ -1,4 +1,5 @@
-import { queryTaskApplications, queryTasks, saveTask, saveApplication } from '@/services/taskApplication';
+import { queryTaskApplications, saveApplication } from '@/services/taskApplication';
+import { queryTasks, saveTask } from '@/services/tasks';
 
 export default {
   namespace: 'taskApplication',

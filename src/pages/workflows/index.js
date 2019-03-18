@@ -64,7 +64,7 @@ const WorkFlows = ({ dispatch, workflows }) => {
       type: 'workflows/execute',
       payload: {
         serialNo,
-        params
+        params: JSON.parse(params)
       }
     }).then((response) => {
       if(response){

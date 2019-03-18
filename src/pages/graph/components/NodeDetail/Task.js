@@ -3,6 +3,7 @@ import React from 'react';
 import Detail from './Detail';
 
 const getTaskName = (task, tasks) => {
+  if(!tasks)return null;
   for (let i = 0; i < tasks.length; i++) {
     if (tasks[i].node === task[0] && tasks[i].taskKey === task[1]) {
       return tasks[i].name || tasks[i].taskKey;

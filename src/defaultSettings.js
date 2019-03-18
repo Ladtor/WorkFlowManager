@@ -19,6 +19,7 @@ module.exports = {
       "WORK_FLOW": ['label', 'subSerialNo'],
     }
   },
+  stompUrl: 'http://localhost:8080/stomp',
   proxy: {
     "/api": {
       "target": "http://localhost:8080/",
