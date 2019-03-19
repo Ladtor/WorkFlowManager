@@ -109,16 +109,16 @@ class BasicLayout extends React.PureComponent {
 
   getPageTitle = (pathname, breadcrumbNameMap) => {
     const currRouterData = this.matchParamsPath(pathname, breadcrumbNameMap);
-
+    const {title} = this.props;
     if (!currRouterData) {
-      return 'Ant Design Pro';
+      return `${title}`;
     }
     const pageName = formatMessage({
       id: currRouterData.locale || currRouterData.name,
       defaultMessage: currRouterData.name,
     });
 
-    return `${pageName} - Ant Design Pro`;
+    return `${pageName} - ${title}`;
   };
 
   getLayoutStyle = () => {

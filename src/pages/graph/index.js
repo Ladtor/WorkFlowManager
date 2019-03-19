@@ -1,9 +1,10 @@
 import React from 'react';
 import { routerRedux } from 'dva/router';
 import { connect } from 'dva';
-import { Col, Row, Card, Icon, message } from 'antd';
+import { Col, Row, Card, Icon } from 'antd';
 import GGEditor, { Koni } from 'gg-editor';
 import SockJsClient from 'react-stomp';
+import DocumentTitle from 'react-document-title';
 import EditorMinimap from '@/components/Koni/EditorMinimap';
 import { GraphModel } from '@/components/Koni/Node';
 import { AddCommand, CopyAdjacentCommand, CopyCommand, DeleteCommand } from '@/components/Koni/Command';
@@ -16,13 +17,17 @@ import styles from './index.less';
 let koni;
 let client;
 const Graph = ({ setting, graph: props, dispatch }) => {
-  const { edgeStatusColor, nodeStatusColor, stompUrl } = setting;
+  const { edgeStatusColor, nodeStatusColor, stompUrl, title } = setting;
   const { graph, resultModalVisible, paramsModalVisible, executeLog, runVersion, edgeLogList, nodeLogList, serialNo, version, tasks } = props;
   const NODE_LOG = '/nodeLog';
   const EDGE_LOG = '/edgeLog';
   const EXECUTE_LOG = '/executeLog';
   const config = {
     enable: () => false,
+  };
+
+  const getPageTitle = () =>{
+    return `${title}`;
   };
 
   const fillLog = (data, edgeLogList, nodeLogList) => {
@@ -222,6 +227,7 @@ const Graph = ({ setting, graph: props, dispatch }) => {
       }}
       ref={setKoni}
     >
+      <DocumentTitle title={getPageTitle()} />
       <Row type="flex" className={styles.editorBd}>
         <Col span={3} className={styles.editorSidebar}>
           <Card title='运行记录' bordered={false} extra={<a onClick={handleRefreshExecuteLog}><Icon type="sync" /></a>}>

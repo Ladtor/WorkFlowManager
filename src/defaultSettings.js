@@ -26,5 +26,6 @@ module.exports = {
       "changeOrigin": true,
       "pathRewrite": { "^/api" : "" }
     }
-  }
+  },
+  title: 'Ladtor WorkFlow System',
 };
