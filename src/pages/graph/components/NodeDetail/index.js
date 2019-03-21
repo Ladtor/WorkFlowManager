@@ -7,8 +7,9 @@ import OrForm from './Or';
 import WorkFlowForm from './WorkFlow';
 import HttpForm from './Http';
 import TaskForm from './Task';
+import ManualForm from './Manual';
 
-import { AND, HTTP, OR, RESULT, START, WORK_FLOW, TASK } from '@/components/Koni/NodeType';
+import { AND, HTTP, OR, RESULT, START, WORK_FLOW, TASK, MANUAL } from '@/components/Koni/NodeType';
 
 const inlineFormItemLayout = {
   labelCol: {
@@ -56,6 +57,11 @@ class NodeDetail extends React.Component {
         />;
       case OR:
         return <OrForm
+          model={model}
+          formItemLayout={inlineFormItemLayout}
+        />;
+      case MANUAL:
+        return <ManualForm
           model={model}
           formItemLayout={inlineFormItemLayout}
         />;

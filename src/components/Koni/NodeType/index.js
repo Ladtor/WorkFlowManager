@@ -5,6 +5,7 @@ const HTTP = "HTTP";
 const WORK_FLOW = "WORK_FLOW";
 const AND = "AND";
 const OR = "OR";
+const MANUAL = "MANUAL";
 
 export {
   START,
@@ -13,5 +14,6 @@ export {
   HTTP,
   WORK_FLOW,
   AND,
-  OR
+  OR,
+  MANUAL
 }

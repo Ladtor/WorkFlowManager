@@ -8,6 +8,7 @@ import {
   WorkFlowNode,
   AndNode,
   OrNode,
+  ManualNode,
   GraphModel,
 } from '../../../../components/Koni/Node';
 
@@ -20,6 +21,7 @@ const KoniItemPanel = () => (
       <WorkFlowNode />
       <AndNode />
       <OrNode />
+      <ManualNode />
     </Card>
   </ItemPanel>
 );

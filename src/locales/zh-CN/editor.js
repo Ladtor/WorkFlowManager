@@ -8,6 +8,7 @@ export default {
   'Start': '起始节点',
   'Task': '任务节点',
   'Sub WorkFlow': '子工作流节点',
+  'Manual': '手动节点',
   'Execute': '执行',
   'Success': '完成',
   'Cancel': '取消',
