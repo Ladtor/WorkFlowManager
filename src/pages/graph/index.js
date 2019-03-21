@@ -200,7 +200,6 @@ const Graph = ({ setting, graph: props, dispatch }) => {
     dispatch({
       type: 'graph/connect'
     });
-    handleRefreshNodeLog();
   };
 
   const handleDisConnect = () => {

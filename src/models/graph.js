@@ -17,10 +17,10 @@ export default {
         const edgeLogs = edgeLogList.filter(edgeLog => edgeLog.edgeId == payload.edgeId);
         if (edgeLogs > 0) {
           Object.assign(edgeLogs[0], payload);
-        }else {
+        } else {
           edgeLogList.push(payload);
         }
-        return { ...state};
+        return { ...state };
       }
       return state;
     },
@@ -41,12 +41,12 @@ export default {
       const { executeLog = [], serialNo, version } = state;
       if (serialNo === payload.serialNo && version === payload.version) {
         const result = executeLog.filter(log => log.runVersion === payload.runVersion);
-        if(result.length > 0){
+        if (result.length > 0) {
           Object.assign(result[0], payload);
-        }else {
-          result.unshift(payload);
+        } else {
+          executeLog.unshift(payload);
         }
-        return { ...state};
+        return { ...state };
       }
       return state;
     },
