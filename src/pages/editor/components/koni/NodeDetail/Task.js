@@ -1,36 +1,9 @@
-import { Card, Form, Input, Select, Cascader } from 'antd';
+import { Card, Form, Input, Cascader } from 'antd';
 import React from 'react';
+import { locales } from '@/utils/utils';
 
+const format = locales('editor');
 const { Item } = Form;
-const { Option } = Select;
-const options = [{
-  value: 'zhejiang',
-  label: 'Zhejiang',
-  children: [{
-    value: 'hangzhou',
-    label: 'Hangzhou',
-    children: [{
-      value: 'xihu',
-      label: 'West Lake',
-    }, {
-      value: 'xiasha',
-      label: 'Xia Sha',
-      disabled: true,
-    }],
-  }],
-}, {
-  value: 'jiangsu',
-  label: 'Jiangsu',
-  children: [{
-    value: 'nanjing',
-    label: 'Nanjing',
-    children: [{
-      value: 'zhonghuamen',
-      label: 'Zhong Hua men',
-    }],
-  }],
-}];
-
 function onChange(value, selectedOptions) {
   console.log(value, selectedOptions);
 }
@@ -71,10 +44,10 @@ const Task = (props) => {
   const { label, task } = model;
   const options = getOptions(tasks);
   return (
-    <Card type="inner" title="任务节点" bordered={false}>
+    <Card type="inner" title={format('Task')} bordered={false}>
       <Form onSubmit={onSubmit}>
         <Item
-          label="标签"
+          label={format('Label')}
           {...formItemLayout}
         >
           {
@@ -84,7 +57,7 @@ const Task = (props) => {
           }
         </Item>
         <Item
-          label="任务"
+          label={format('Select Task')}
           {...formItemLayout}
         >
           {
@@ -98,7 +71,6 @@ const Task = (props) => {
                 options={options}
                 onChange={onChange}
                 onBlur={onSubmit}
-                placeholder="选择任务"
                 showSearch={{ filter }}
               />
             )

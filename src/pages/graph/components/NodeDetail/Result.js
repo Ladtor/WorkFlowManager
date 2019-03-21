@@ -1,6 +1,9 @@
 import { Card } from 'antd';
 import React from 'react';
 import Detail from './Detail';
+import { locales } from '@/utils/utils';
+
+const format = locales('editor');
 
 const Result = (props) => {
   const { model } = props;
@@ -15,7 +18,7 @@ const Result = (props) => {
     value: result
   }];
   return (
-    <Card type="inner" title="结果节点" bordered={false}>
+    <Card type="inner" title={format('Result')} bordered={false}>
       <Detail data={data} />
     </Card>
   );

@@ -1,16 +1,18 @@
 import { Card, Form, Input } from 'antd';
 import React from 'react';
+import { locales } from '@/utils/utils';
 
+const format = locales('editor');
 const { Item } = Form;
 
 const Result = (props) => {
   const { getFieldDecorator, formItemLayout, onSubmit, model } = props;
   const { label } = model;
   return (
-    <Card type="inner" title="结果节点" bordered={false}>
+    <Card type="inner" title={format('Result')} bordered={false}>
       <Form onSubmit={onSubmit}>
         <Item
-          label="标签"
+          label={format('Label')}
           {...formItemLayout}
         >
           {

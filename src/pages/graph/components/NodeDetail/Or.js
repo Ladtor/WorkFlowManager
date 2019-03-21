@@ -1,6 +1,9 @@
 import { Card } from 'antd';
 import React from 'react';
 import Detail from './Detail';
+import { locales } from '@/utils/utils';
+
+const format = locales('editor');
 
 
 const Or = (props) => {
@@ -16,7 +19,7 @@ const Or = (props) => {
     value: result
   }];
   return (
-    <Card type="inner" title="或节点" bordered={false}>
+    <Card type="inner" title={format('Or')} bordered={false}>
       <Detail data={data} />
     </Card>
   );

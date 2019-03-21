@@ -27,5 +27,5 @@ module.exports = {
       "pathRewrite": { "^/api" : "" }
     }
   },
-  title: 'Ladtor WorkFlow System',
+  title: 'Ladtor',
 };

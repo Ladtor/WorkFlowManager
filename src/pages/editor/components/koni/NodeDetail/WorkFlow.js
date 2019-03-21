@@ -1,6 +1,8 @@
 import { Card, Form, Input, Select } from 'antd';
 import React from 'react';
+import { locales } from '@/utils/utils';
 
+const format = locales('editor');
 const { Item } = Form;
 const { Option } = Select;
 
@@ -9,10 +11,10 @@ const WorkFlow = (props) => {
   const { label, subSerialNo } = model;
   const options = ( workflows || []).map(d => <Option value={d.serialNo}>{d.name}</Option>);
   return (
-    <Card type="inner" title="子工作流节点" bordered={false}>
+    <Card type="inner" title={format('Sub WorkFlow')} bordered={false}>
       <Form onSubmit={onSubmit}>
         <Item
-          label="标签"
+          label={format('Label')}
           {...formItemLayout}
         >
           {
@@ -22,7 +24,7 @@ const WorkFlow = (props) => {
           }
         </Item>
         <Item
-          label="工作流"
+          label={format('Select WorkFlow')}
           {...formItemLayout}
         >
           {
@@ -32,7 +34,6 @@ const WorkFlow = (props) => {
               <Select
                 showSearch
                 style={{ width: 200 }}
-                placeholder="选择工作流"
                 optionFilterProp="children"
                 onChange={onSubmit}
                 onBlur={onSubmit}

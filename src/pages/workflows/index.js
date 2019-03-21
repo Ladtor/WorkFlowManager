@@ -3,13 +3,14 @@ import { connect } from 'dva';
 import CronEditor from 'antd-cron-editor';
 import { Card, message, Modal } from 'antd';
 import PopInputModal from "@/components/PopInputModal";
-import { isJSON } from "@/utils/utils";
+import { isJSON, locales } from "@/utils/utils";
 import WorkFlowList from './components/WorkFlowList';
 import ButtonBar from "./components/ButtonBar";
 import styles from './index.css';
 
+const format = locales('workflow');
 const jsonRule = {
-  message: '请使用 json 格式',
+  message: format('tip.jsonInvalid'),
   validator: (rule, value, callback) => {
     isJSON(value) ? callback() : callback(true);
   },
@@ -46,17 +47,17 @@ const WorkFlows = ({ dispatch, workflows }) => {
   };
 
   const checkSerialNo = () => {
-    if(serialNo)return true;
-    message.warn("请先选择工作流");
+    if (serialNo) return true;
+    message.warn(format('tip.unSelect'));
     return false;
   };
 
   const handleEdit = () => {
-    if(checkSerialNo())window.open(`/editor/${serialNo}`);
+    if (checkSerialNo()) window.open(`/editor/${serialNo}`);
   };
 
   const handleView = () => {
-    if(checkSerialNo())window.open(`/graph/${serialNo}`)
+    if (checkSerialNo()) window.open(`/graph/${serialNo}`)
   };
 
   const handleRun = (params) => {
@@ -67,11 +68,11 @@ const WorkFlows = ({ dispatch, workflows }) => {
         params: JSON.parse(params)
       }
     }).then((response) => {
-      if(response){
-        handleSuccessAndRefresh("执行成功");
+      if (response) {
+        handleSuccessAndRefresh(format('Run Success'));
         handleHideRunModal();
-      }else {
-        handleFailAndRefresh("执行失败");
+      } else {
+        handleFailAndRefresh(format('Run Fail'));
       }
     })
   };
@@ -84,41 +85,41 @@ const WorkFlows = ({ dispatch, workflows }) => {
         cronText
       }
     }).then((response) => {
-      if(response){
-        handleSuccessAndRefresh("执行成功");
+      if (response) {
+        handleSuccessAndRefresh(format('Run Success'));
         handleHideCronModal();
-      }else {
-        handleFailAndRefresh("执行失败");
+      } else {
+        handleFailAndRefresh(format('Run Fail'));
       }
     })
   };
 
   const handleCancel = () => {
-    if(!checkSerialNo())return;
+    if (!checkSerialNo()) return;
     dispatch({
       type: 'workflows/cancel',
       payload: {
         serialNo
       }
     }).then((response) => {
-      if(response){
-        handleSuccessAndRefresh("取消成功");
-      }else {
-        handleFailAndRefresh("取消失败");
+      if (response) {
+        handleSuccessAndRefresh(format('Cancel Success'));
+      } else {
+        handleFailAndRefresh(format('Cancel Fail'));
       }
     })
   };
 
   const handleDelete = () => {
-    if(!checkSerialNo())return;
+    if (!checkSerialNo()) return;
     dispatch({
       type: 'workflows/delete',
       payload: serialNo,
     }).then((respsonse) => {
-      if(respsonse){
-        handleSuccessAndRefresh("删除成功");
-      }else {
-        handleFailAndRefresh("删除失败");
+      if (respsonse) {
+        handleSuccessAndRefresh(format('Delete Success'));
+      } else {
+        handleFailAndRefresh(format('Delete Fail'));
       }
     });
   };
@@ -132,7 +133,7 @@ const WorkFlows = ({ dispatch, workflows }) => {
   };
 
   const handleShowRunModal = () => {
-    if(!checkSerialNo())return;
+    if (!checkSerialNo()) return;
     const runModalVisible = true;
     setState({ runModalVisible });
   };
@@ -143,7 +144,7 @@ const WorkFlows = ({ dispatch, workflows }) => {
   };
 
   const handleShowCronModal = () => {
-    if(!checkSerialNo())return;
+    if (!checkSerialNo()) return;
     const cronModalVisible = true;
     setState({ cronModalVisible });
   };
@@ -177,7 +178,7 @@ const WorkFlows = ({ dispatch, workflows }) => {
       </Modal>
       <PopInputModal
         visible={runModalVisible}
-        title="执行参数"
+        title={format('Run Params')}
         onChange={handleRun}
         onCancel={handleHideRunModal}
         rules={[jsonRule]}

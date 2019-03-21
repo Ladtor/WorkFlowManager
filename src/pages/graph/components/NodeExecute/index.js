@@ -1,6 +1,9 @@
 import React from 'react';
-import {Row, Col, Button} from 'antd';
+import { Row, Col, Button } from 'antd';
 import { withPropsAPI } from 'gg-editor';
+import { locales } from '@/utils/utils';
+
+const format = locales('editor');
 
 const NodeExecute = ({ propsAPI, onExecute, onSuccess }) => {
   const { getSelected } = propsAPI;
@@ -10,22 +13,22 @@ const NodeExecute = ({ propsAPI, onExecute, onSuccess }) => {
     return null;
   }
 
-  const handleExecute = ()=>{
+  const handleExecute = () => {
     onExecute && onExecute(item)
   };
 
-  const handleSuccess = ()=>{
+  const handleSuccess = () => {
     onSuccess && onSuccess(item)
   };
 
   return (
-    <div style={{backgroundColor: '#fff', paddingBottom: '15px'}}>
-      <Row gutter={16} style={{textAlign: 'center'}}>
+    <div style={{ backgroundColor: '#fff', paddingBottom: '15px' }}>
+      <Row gutter={16} style={{ textAlign: 'center' }}>
         <Col span={12}>
-          <Button type='primary' onClick={handleExecute}>立即执行</Button>
+          <Button type='primary' onClick={handleExecute}>{format('Execute')}</Button>
         </Col>
         <Col span={12}>
-          <Button onClick={handleSuccess}>立即完成</Button>
+          <Button onClick={handleSuccess}>{format('Success')}</Button>
         </Col>
       </Row>
     </div>

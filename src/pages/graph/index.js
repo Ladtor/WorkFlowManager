@@ -190,8 +190,9 @@ const Graph = ({ setting, graph: props, dispatch }) => {
           type: 'graph/executeLog',
           payload: msg
         });
+        break;
       default:
-        console.log("topic not found ", topic);
+        console.warn("topic not found ", topic);
     }
   };
 

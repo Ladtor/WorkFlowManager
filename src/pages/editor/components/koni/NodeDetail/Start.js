@@ -1,17 +1,19 @@
 import { Card, Form, Input } from 'antd';
 import React from 'react';
 import { isJSON } from '@/utils/utils';
+import { locales } from '@/utils/utils';
 
+const format = locales('editor');
 const { Item } = Form;
 
 const Start = (props) => {
   const { getFieldDecorator, formItemLayout, onSubmit, model } = props;
   const { label, initParams } = model;
   return (
-    <Card type="inner" title="起始节点" bordered={false}>
+    <Card type="inner" title={format('Start')} bordered={false}>
       <Form onSubmit={onSubmit}>
         <Item
-          label="标签"
+          label={format('Label')}
           {...formItemLayout}
         >
           {
@@ -21,14 +23,14 @@ const Start = (props) => {
           }
         </Item>
         <Item
-          label="初始参数"
+          label={format('Init Params')}
           {...formItemLayout}
         >
           {
             getFieldDecorator('initParams', {
               initialValue: initParams,
               rules: [{
-                message: '请使用 json 格式',
+                message: format('JSON'),
                 validator: (rule, value, callback) => {
                   isJSON(value) ? callback() : callback(true);
                 },

@@ -2,7 +2,9 @@ import React from 'react';
 import { Card } from 'antd';
 import { withPropsAPI } from 'gg-editor';
 import Detail from '@/pages/graph/components/NodeDetail/Detail';
+import { locales } from '@/utils/utils';
 
+const format = locales('editor');
 const EdgeDetail = ({ propsAPI }) => {
   const { getSelected } = propsAPI;
 
@@ -25,11 +27,11 @@ const EdgeDetail = ({ propsAPI }) => {
   }, {
     label: 'result',
     type: 'text',
-    value: result? 'true': 'false'
+    value: result ? 'true' : 'false'
   }];
 
   return (
-    <Card type="inner" title="边线属性" bordered={false}>
+    <Card type="inner" title={format('Edge Properties')} bordered={false}>
       <Detail data={data} />
     </Card>
   );

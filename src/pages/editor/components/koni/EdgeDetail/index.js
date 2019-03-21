@@ -1,7 +1,9 @@
 import React from 'react';
 import { Card, Form, Input, Select } from 'antd';
 import { withPropsAPI } from 'gg-editor';
+import { locales } from '@/utils/utils';
 
+const format = locales('editor');
 const { Item } = Form;
 const { Option } = Select;
 
@@ -46,10 +48,10 @@ class EdgeDetail extends React.Component {
   renderShapeSelect(disabled) {
     return (
       <Select onChange={this.handleSubmit} disabled={disabled}>
-        <Option value="flow">直线</Option>
-        <Option value="flow-smooth">图曲线</Option>
-        <Option value="flow-polyline">图折线</Option>
-        <Option value="flow-polyline-round">圆角折线</Option>
+        <Option value="flow">{format('Straight')}</Option>
+        <Option value="flow-smooth">{format('Curve')}</Option>
+        <Option value="flow-polyline">{format('Polygon')}</Option>
+        <Option value="flow-polyline-round">{format('Fillet Polygon')}</Option>
       </Select>
     );
   }
@@ -68,10 +70,10 @@ class EdgeDetail extends React.Component {
     const { label = '', shape = 'flow', condition } = item.getModel();
 
     return (
-      <Card type="inner" title="边线属性" bordered={false}>
+      <Card type="inner" title={format('Edge Properties')} bordered={false}>
         <Form onSubmit={this.handleSubmit}>
           <Item
-            label="标签"
+            label={format('Label')}
             {...inlineFormItemLayout}
           >
             {
@@ -81,7 +83,7 @@ class EdgeDetail extends React.Component {
             }
           </Item>
           <Item
-            label="条件"
+            label={format('Condition')}
             {...inlineFormItemLayout}
           >
             {
@@ -91,7 +93,7 @@ class EdgeDetail extends React.Component {
             }
           </Item>
           <Item
-            label="图形"
+            label={format('Shape')}
             {...inlineFormItemLayout}
           >
             {

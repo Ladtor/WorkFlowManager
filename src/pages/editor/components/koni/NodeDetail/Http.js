@@ -1,17 +1,19 @@
 import { Card, Form, Input, Select } from 'antd';
 import React from 'react';
 import { isJSON } from '@/utils/utils';
+import { locales } from '@/utils/utils';
 
+const format = locales('editor');
 const { Item } = Form;
 const { Option } = Select;
 const Http = (props) => {
   const { getFieldDecorator, formItemLayout, onSubmit, model } = props;
   const { label, url, method, requestParams } = model;
   return (
-    <Card type="inner" title="远程节点" bordered={false}>
+    <Card type="inner" title={format('Http')} bordered={false}>
       <Form onSubmit={onSubmit}>
         <Item
-          label="标签"
+          label={format('Label')}
           {...formItemLayout}
         >
           {
@@ -21,7 +23,7 @@ const Http = (props) => {
           }
         </Item>
         <Item
-          label="url"
+          label={format('Url')}
           {...formItemLayout}
         >
           {
@@ -31,13 +33,13 @@ const Http = (props) => {
                 required: true,
               },{
                 pattern: /^((ht|f)tps?):\/\/([\w\-]+(\.[\w\-]+)*\/)*[\w\-]+(\.[\w\-]+)*\/?(\?([\w\-\.,@?^=%&:\/~\+#]*)+)?/,
-                message: '格式错误'
+                message: format('Format Error')
               }],
             })(<Input onBlur={onSubmit} />)
           }
         </Item>
         <Item
-          label="请求方式"
+          label={format('Method')}
           {...formItemLayout}
         >
           {
@@ -58,14 +60,14 @@ const Http = (props) => {
           }
         </Item>
         <Item
-          label="请求参数"
+          label={format('Request Params')}
           {...formItemLayout}
         >
           {
             getFieldDecorator('requestParams', {
               initialValue: requestParams,
               rules: [{
-                message: '请使用 json 格式',
+                message: format('JSON'),
                 validator: (rule, value, callback) => {
                   isJSON(value) ? callback() : callback(true);
                 },

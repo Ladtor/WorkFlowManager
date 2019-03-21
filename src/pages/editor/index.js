@@ -8,16 +8,14 @@ import KoniItemPanel from './components/koni/KoniItemPanel';
 import KoniDetailPanel from './components/koni/KoniDetailPanel';
 import KoniContextMenu from './components/koni/KoniContextMenu';
 import EditorMinimap from '../../components/Koni/EditorMinimap';
-import {
-  SaveCommand,
-  CopyCommand,
-  CopyAdjacentCommand,
-  DeleteCommand,
-} from '@/components/Koni/Command';
+import { SaveCommand, CopyCommand, CopyAdjacentCommand, DeleteCommand } from '@/components/Koni/Command';
 import { RESULT, START } from '../../components/Koni/NodeType';
 import PopInputModal from '@/components/PopInputModal';
+import { locales } from '@/utils/utils';
 import styles from './index.less';
 
+const format = locales('editor');
+// const format = (a) => a;
 const START_ID = '00000000';
 const RESULT_ID = 'ffffffff';
 const LOCK_ID_LIST = [START_ID, RESULT_ID];
@@ -221,7 +219,7 @@ const KoniPage = ({ dispatch, editor, setting }) => {
       <DeleteCommand config={config} />
       <CopyAdjacentCommand config={copyAdjacentConfig} />
 
-      <PopInputModal title="名称" visible={modalVisible} onChange={handleSaveName} onCancel={handleCancel} />
+      <PopInputModal title={format('Name')} visible={modalVisible} onChange={handleSaveName} onCancel={handleCancel} />
     </GGEditor>
   );
 };

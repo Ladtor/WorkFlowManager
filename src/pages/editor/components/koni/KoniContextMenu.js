@@ -1,7 +1,10 @@
 import React from 'react';
 import styles from '../ContextMenu.less';
 import iconfont from './iconfont.less';
-import {CanvasMenu, Command, EdgeMenu, GroupMenu, MultiMenu, NodeMenu, ContextMenu} from "gg-editor";
+import { CanvasMenu, Command, EdgeMenu, GroupMenu, MultiMenu, NodeMenu, ContextMenu } from "gg-editor";
+import { locales } from '@/utils/utils';
+
+const format = locales(('editor'));
 
 class KoniContextMenu extends React.Component {
   render() {
@@ -11,13 +14,13 @@ class KoniContextMenu extends React.Component {
           <Command name="copy">
             <div className={styles.item}>
               <i className={`${iconfont.iconfont} ${iconfont.iconCopyO}`} />
-              <span>复制</span>
+              <span>{format('Copy')}</span>
             </div>
           </Command>
           <Command name="delete">
             <div className={styles.item}>
               <i className={`${iconfont.iconfont} ${iconfont.iconDeleteO}`} />
-              <span>删除</span>
+              <span>{format('Delete')}</span>
             </div>
           </Command>
         </NodeMenu>
@@ -25,7 +28,7 @@ class KoniContextMenu extends React.Component {
           <Command name="delete">
             <div className={styles.item}>
               <i className={`${iconfont.iconfont} ${iconfont.iconDeleteO}`} />
-              <span>删除</span>
+              <span>{format('Delete')}</span>
             </div>
           </Command>
         </EdgeMenu>
@@ -33,19 +36,19 @@ class KoniContextMenu extends React.Component {
           <Command name="copy">
             <div className={styles.item}>
               <i className={`${iconfont.iconfont} ${iconfont.iconCopyO}`} />
-              <span>复制</span>
+              <span>{format('Copy')}</span>
             </div>
           </Command>
           <Command name="delete">
             <div className={styles.item}>
               <i className={`${iconfont.iconfont} ${iconfont.iconDeleteO}`} />
-              <span>删除</span>
+              <span>{format('Delete')}</span>
             </div>
           </Command>
           <Command name="unGroup">
             <div className={styles.item}>
               <i className={`${iconfont.iconfont} ${iconfont.iconUngroup}`} />
-              <span>解组</span>
+              <span>{format('UnGroup')}</span>
             </div>
           </Command>
         </GroupMenu>
@@ -53,25 +56,25 @@ class KoniContextMenu extends React.Component {
           <Command name="copy">
             <div className={styles.item}>
               <i className={`${iconfont.iconfont} ${iconfont.iconCopyO}`} />
-              <span>复制</span>
+              <span>{format('Copy')}</span>
             </div>
           </Command>
           <Command name="paste">
             <div className={styles.item}>
               <i className={`${iconfont.iconfont} ${iconfont.iconPasterO}`} />
-              <span>粘贴</span>
+              <span>{format('Paste')}</span>
             </div>
           </Command>
           <Command name="addGroup">
             <div className={styles.item}>
               <i className={`${iconfont.iconfont} ${iconfont.iconGroup}`} />
-              <span>成组</span>
+              <span>{format('Group')}</span>
             </div>
           </Command>
           <Command name="delete">
             <div className={styles.item}>
               <i className={`${iconfont.iconfont} ${iconfont.iconDeleteO}`} />
-              <span>删除</span>
+              <span>{format('Delete')}</span>
             </div>
           </Command>
         </MultiMenu>
@@ -79,19 +82,19 @@ class KoniContextMenu extends React.Component {
           <Command name="undo">
             <div className={styles.item}>
               <i className={`${iconfont.iconfont} ${iconfont.iconUndo}`} />
-              <span>撤销</span>
+              <span>{format('Undo')}</span>
             </div>
           </Command>
           <Command name="redo">
             <div className={styles.item}>
               <i className={`${iconfont.iconfont} ${iconfont.iconRedo}`} />
-              <span>重做</span>
+              <span>{format('Redo')}</span>
             </div>
           </Command>
           <Command name="pasteHere">
             <div className={styles.item}>
               <i className={`${iconfont.iconfont} ${iconfont.iconPasterO}`} />
-              <span>粘贴</span>
+              <span>{format('Paste')}</span>
             </div>
           </Command>
         </CanvasMenu>

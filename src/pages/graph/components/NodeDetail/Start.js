@@ -1,6 +1,9 @@
 import { Card } from 'antd';
 import React from 'react';
 import Detail from './Detail';
+import { locales } from '@/utils/utils';
+
+const format = locales('editor');
 
 
 const Start = (props) => {
@@ -16,11 +19,11 @@ const Start = (props) => {
     value: initParams,
   }, {
     label: 'result',
-    type:  'json',
+    type: 'json',
     value: result
   }];
   return (
-    <Card type="inner" title="起始节点" bordered={false}>
+    <Card type="inner" title={format('Start')} bordered={false}>
       <Detail data={data} />
     </Card>
   );

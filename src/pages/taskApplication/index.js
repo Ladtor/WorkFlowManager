@@ -4,23 +4,25 @@ import TaskApplicationList from './components/TaskApplicationList';
 import styles from './index.css';
 import PopMulInputModal from '@/components/PopMulInputModal';
 import { Button, Card, message } from "antd";
-import { getSetState } from "@/utils/utils";
+import { formatTableTitle, getSetState, locales } from "@/utils/utils";
 
+const prefix = 'taskApplication';
+const format = locales(prefix);
 const TaskApplication = ({ taskApplication, dispatch }) => {
-  const { list, tasks, taskVisible, applicationVisible } = taskApplication;
 
-  const setState = getSetState(dispatch, 'taskApplication');
+  const { list, tasks, taskVisible, applicationVisible } = taskApplication;
+  const setState = getSetState(dispatch, prefix);
 
   const handleExpandedRowsChange = (name) => {
     dispatch({
-      type: 'taskApplication/fetchTasks',
+      type: `${prefix}/fetchTasks`,
       payload: name,
     });
   };
 
   const handleRefresh = () => {
     dispatch({
-      type: 'taskApplication/fetch'
+      type: `${prefix}/fetch`
     })
   };
 
@@ -32,9 +34,10 @@ const TaskApplication = ({ taskApplication, dispatch }) => {
     setState({ taskVisible: false, name: undefined });
   };
 
+
   const handleSubmitTask = (values) => {
     dispatch({
-      type: 'taskApplication/addTask',
+      type: `${prefix}/addTask`,
       payload: values
     }).then(() => {
       handleHideTask();
@@ -51,7 +54,7 @@ const TaskApplication = ({ taskApplication, dispatch }) => {
 
   const handleSubmitApplication = (values) => {
     dispatch({
-      type: 'taskApplication/addApplication',
+      type: `${prefix}/addApplication`,
       payload: values
     }).then((response)=>{
       if(!response){
@@ -68,27 +71,27 @@ const TaskApplication = ({ taskApplication, dispatch }) => {
     title: 'Key',
     field: 'taskKey'
   }, {
-    title: 'Name',
+    title: 'Task Name',
     field: 'name'
   }];
 
   const applicationData = [{
-    title: '应用名称',
+    title: 'Application Name',
     field: 'name'
   }, {
-    title: '请求地址',
+    title: 'Url',
     field: 'url'
   }];
 
   return (
     <div className={styles.normal}>
       <Card>
-        <Button type="primary" onClick={handleAddApplication}>新增应用</Button>
+        <Button type="primary" onClick={handleAddApplication}>{format('New')}</Button>
       </Card>
       <TaskApplicationList dataSource={list} tasks={tasks} onAddClick={handleAddClick}
                            onExpandedRowsChange={handleExpandedRowsChange} />
-      <PopMulInputModal visible={taskVisible} data={taskData} onCancel={handleHideTask} onChange={handleSubmitTask} />
-      <PopMulInputModal visible={applicationVisible} data={applicationData} onCancel={handleHideApplication} onChange={handleSubmitApplication} />
+      <PopMulInputModal visible={taskVisible} data={formatTableTitle(prefix, taskData)} onCancel={handleHideTask} onChange={handleSubmitTask} />
+      <PopMulInputModal visible={applicationVisible} data={formatTableTitle(prefix, applicationData)} onCancel={handleHideApplication} onChange={handleSubmitApplication} />
     </div>
   );
 };

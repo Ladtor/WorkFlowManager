@@ -150,6 +150,7 @@ class BasicLayout extends React.PureComponent {
       breadcrumbNameMap,
       route: { routes },
       fixedHeader,
+      title,
     } = this.props;
 
     const isTop = PropsLayout === 'topmenu';
@@ -160,6 +161,7 @@ class BasicLayout extends React.PureComponent {
         {isTop && !isMobile ? null : (
           <SiderMenu
             logo={logo}
+            title={title}
             theme={navTheme}
             onCollapse={this.handleMenuCollapse}
             menuData={menuData}

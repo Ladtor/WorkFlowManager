@@ -1,9 +1,12 @@
 import { Card } from 'antd';
 import React from 'react';
 import Detail from './Detail';
+import { locales } from '@/utils/utils';
+
+const format = locales('editor');
 
 const getTaskName = (task, tasks) => {
-  if(!tasks)return null;
+  if (!tasks) return null;
   for (let i = 0; i < tasks.length; i++) {
     if (tasks[i].node === task[0] && tasks[i].taskKey === task[1]) {
       return tasks[i].name || tasks[i].taskKey;
@@ -31,7 +34,7 @@ const Task = (props) => {
     value: result,
   }];
   return (
-    <Card type="inner" title="任务节点" bordered={false}>
+    <Card type="inner" title={format('Task')} bordered={false}>
       <Detail data={data} />
     </Card>
   );

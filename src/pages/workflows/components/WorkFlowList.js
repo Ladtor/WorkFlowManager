@@ -1,5 +1,6 @@
 import React from 'react';
 import { Table } from 'antd';
+import { formatTableTitle } from '@/utils/utils';
 
 const WorkFlowList = ({ workflows, serialNo, onSelectChange }) => {
   const handleSelectChange = (serialNos) => {
@@ -16,12 +17,6 @@ const WorkFlowList = ({ workflows, serialNo, onSelectChange }) => {
   }, {
     title: 'Times',
     dataIndex: 'runVersion',
-    // }, {
-    //   title: 'Dependencies',
-    //   dataIndex: 'dependencies',
-    // }, {
-    //   title: 'Dependents',
-    //   dataIndex: 'dependents',
   }, {
     title: 'Version',
     dataIndex: 'version',
@@ -32,11 +27,12 @@ const WorkFlowList = ({ workflows, serialNo, onSelectChange }) => {
     title: 'UpdatedAt',
     dataIndex: 'updatedAt',
   }];
+
   return (
     <div>
       <Table
         dataSource={workflows}
-        columns={columns}
+        columns={formatTableTitle('workflow', columns)}
         rowKey={record => record.serialNo}
         rowSelection={{
           type: 'radio',

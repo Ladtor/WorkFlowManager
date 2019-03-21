@@ -1,12 +1,13 @@
 import { Table } from 'antd';
 import React from 'react';
+import { formatTableTitle } from "@/utils/utils";
 
 const TaskList = ({ tasks }) => {
   const columns = [{
     title: 'Key',
     dataIndex: 'taskKey',
   }, {
-    title: 'Name',
+    title: 'Task Name',
     dataIndex: 'name',
   }, {
     title: 'CreatedAt',
@@ -15,7 +16,7 @@ const TaskList = ({ tasks }) => {
   return (
     <Table
       dataSource={tasks}
-      columns={columns}
+      columns={formatTableTitle('taskApplication', columns)}
       rowKey={record => record.id}
       pagination={false}
     />

@@ -1,6 +1,9 @@
 import { Card } from 'antd';
 import React from 'react';
 import Detail from './Detail';
+import { locales } from '@/utils/utils';
+
+const format = locales('editor');
 
 const Http = (props) => {
   const { model } = props;
@@ -27,11 +30,11 @@ const Http = (props) => {
     value: runParams
   }, {
     label: 'result',
-    type:  'json',
+    type: 'json',
     value: result
   }];
   return (
-    <Card type="inner" title="远程节点" bordered={false}>
+    <Card type="inner" title={format('Http')} bordered={false}>
       <Detail data={data} />
     </Card>
   );
