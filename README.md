@@ -18,7 +18,7 @@
 
 - 任务节点
 
-  具体执行任务关键节点，执行完成后续手动回调工作流系统，详见[测试节点](../workflow-test)
+  具体执行任务关键节点，执行完成后续手动回调工作流系统，详见[测试节点](../../../workflow-test)
 
   
 
@@ -57,11 +57,11 @@
 
 ## demo说明
 
-- RandomVal节点代码详见[Test](../Test)
-- Sleep节点代码详见[WorkFlow-Test](../workflow-test)
+- RandomVal节点代码详见[Test](../../../Test)
+- Sleep节点代码详见[WorkFlow-Test](../../../workflow-test)
   
 
-## [后端项目](../workflow)
+## [后端项目](../../../workflow)
 
 ### 鸣谢
 
