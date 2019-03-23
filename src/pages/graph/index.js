@@ -44,6 +44,7 @@ const Graph = ({ setting, graph: props, dispatch }) => {
           edge.result = edgeLogMap[edge.id].result;
         }
         edge.label = edge.label || edge.condition;
+        if(koni)koni.update(edge.id, {...edge});
         return edge;
       });
     }

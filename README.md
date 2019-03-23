@@ -1,131 +1,73 @@
-English | [简体中文](./README.zh-CN.md) | [Русский](./README.ru-RU.md)
+![](./demo.gif)
 
-<h1 align="center">Ant Design Pro</h1>
+### 节点说明
 
-<div align="center">
+`结果节点`与`与节点`在所有入度都执行完成后才会执行，其他节点当有一个入度完成时便会执行，所有节点默认至多被执行一次，除在界面手动点击执行外。
 
-An out-of-box UI solution for enterprise applications as a React boilerplate.
+- 开始节点
 
-[![CircleCI Status](https://circleci.com/gh/ant-design/ant-design-pro.svg?style=svg)](https://circleci.com/gh/ant-design/ant-design-pro/)
-[![Build status](https://ci.appveyor.com/api/projects/status/67fxu2by3ibvqtat/branch/master?svg=true)](https://ci.appveyor.com/project/afc163/ant-design-pro/branch/master)
-[![Dependencies](https://img.shields.io/david/ant-design/ant-design-pro.svg)](https://david-dm.org/ant-design/ant-design-pro)
-[![DevDependencies](https://img.shields.io/david/dev/ant-design/ant-design-pro.svg)](https://david-dm.org/ant-design/ant-design-pro?type=dev)
-[![Gitter](https://img.shields.io/gitter/room/ant-design/pro-english.svg)](https://gitter.im/ant-design/pro-english?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)(🇺🇸)
-[![Gitter](https://img.shields.io/gitter/room/ant-design/ant-design-pro.svg?style=flat-square)](https://gitter.im/ant-design/ant-design-pro?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)(🇨🇳)
+  工作流执行入口
 
+  
 
-![](https://user-images.githubusercontent.com/8186664/44953195-581e3d80-aec4-11e8-8dcb-54b9db38ec11.png)
+- 结果节点
 
-</div>
+  工作流执行结果出口，关联的所有边到达该节点后，工作流状态会被置为成功，不影响其他节点的执行
 
-- Preview: http://preview.pro.ant.design
-- Home Page: http://pro.ant.design
-- Documentation: http://pro.ant.design/docs/getting-started
-- ChangeLog: http://pro.ant.design/docs/changelog
-- FAQ: http://pro.ant.design/docs/faq
-- Mirror Site in China: http://ant-design-pro.gitee.io
+  
 
-## 2.0 Released Now! 🎉🎉🎉
-[Announcing Ant Design Pro 2.0.0](https://medium.com/ant-design/beautiful-and-powerful-ant-design-pro-2-0-release-51358da5af95)
+- 任务节点
 
-## Translation Recruitment :loudspeaker:
+  具体执行任务关键节点，执行完成后续手动回调工作流系统，详见[测试节点](../workflow-test)
 
-We need your help: https://github.com/ant-design/ant-design-pro/issues/120
+  
 
-## Features
+- 远程节点
 
-- :gem: **Neat Design**: Follow [Ant Design specification](http://ant.design/)
-- :triangular_ruler: **Common Templates**: Typical templates for enterprise applications
-- :rocket: **State of The Art Development**: Newest development stack of React/umi/dva/antd
-- :iphone: **Responsive**: Designed for variable screen sizes
-- :art: **Theming**: Customizable theme with simple config
-- :globe_with_meridians: **International**: Built-in i18n solution
-- :gear: **Best Practices**: Solid workflow to make your code healthy
-- :1234: **Mock development**: Easy to use mock development solution
-- :white_check_mark: **UI Test**: Fly safely with unit and e2e tests
+  简单任务或获取数据等Http接口，内部使用RestTemplate支持地址栏`{name}`占位，除此之外，Get方法所有参数都会拼接成queryString传递，Post方法所有参数都会作为Request Body传递。
 
-## Templates
+  
 
-```
-- Dashboard
-  - Analytic
-  - Monitor
-  - Workspace
-- Form
-  - Basic Form
-  - Step Form
-  - Advanced From
-- List
-  - Standard Table
-  - Standard List
-  - Card List
-  - Search List (Project/Applications/Article)
-- Profile
-  - Simple Profile
-  - Advanced Profile
-- Account
-  - Account Center
-  - Account Settings
-- Result
-  - Success
-  - Failed
-- Exception
-  - 403
-  - 404
-  - 500
-- User
-  - Login
-  - Register
-  - Register Result
-```
+- 子工作流节点
 
-## Usage
+  可以用来触发其他已定义的工作流
 
-### Use bash
+  
 
-```bash
-$ git clone https://github.com/ant-design/ant-design-pro.git --depth=1
-$ cd ant-design-pro
-$ npm install
-$ npm start         # visit http://localhost:8000
-```
+- 与逻辑节点
 
-### Use by docker
+  默认情况下的有一条边到达之后该节点就会被执行，后续边到来不会再次被执行，可以通过使用与节点等待所有边都完成后再执行后续节点
 
-```bash
-# preview 
-$ docker pull chenshuai2144/ant-design-pro
-$ docker run -p 80:80 chenshuai2144/ant-design-pro
-# open http://localhost
+  
 
-# dev 
-$ npm run docker:dev
+- 或逻辑节点
 
-# build 
-$ npm run docker:build
+  当有一条边到达之后该节点就会被执行
+  
+
+- 手动节点
+  需手动点击执行或完成，仅为演示方便而创建。
 
 
-# production dev 
-$ npm run docker-prod:dev
+### 边条件说明
 
-# production build 
-$ npm run docker-prod:build
-```
+边条件表达式采用MVEL表达式，详见[MVEL](<https://github.com/mvel/mvel>)，语法说明[wiki](<https://en.wikibooks.org/wiki/Transwiki:MVEL_Language_Guide#Language_Guide_for_2.0>)
 
-More instructions at [documentation](http://pro.ant.design/docs/getting-started).
 
-## Browsers support
 
-Modern browsers and IE11.
+## demo说明
 
-| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Safari | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" alt="Opera" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Opera |
-| --------- | --------- | --------- | --------- | --------- |
-| IE11, Edge| last 2 versions| last 2 versions| last 2 versions| last 2 versions
+- RandomVal节点代码详见[Test](../Test)
+- Sleep节点代码详见[WorkFlow-Test](../workflow-test)
+  
 
-## Contributing
+## [后端项目](../workflow)
 
-Any type of contribution is welcome, here are some examples of how you may contribute to this project:
+### 鸣谢
 
-- Use Ant Design Pro in your daily work.
-- Submit [issues](http://github.com/ant-design/ant-design-pro/issues) to report bugs or ask questions.
-- Propose [pull requests](http://github.com/ant-design/ant-design-pro/pulls) to improve our code.
+- [Ant Design](<https://github.com/ant-design/ant-design>)
+- [Ant Design Pro](<https://github.com/ant-design/ant-design-pro>)
+- [AntV G6](<https://github.com/antvis/g6>)
+- [G6-Editor](<https://github.com/antvis/g6-editor>)
+- [GG-Editor](<https://github.com/gaoli/GGEditor>)
+- [React-Stomp](<https://github.com/lahsivjar/react-stomp>)

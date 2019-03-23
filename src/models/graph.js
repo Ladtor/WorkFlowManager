@@ -12,9 +12,9 @@ export default {
       return { ...state, ...payload };
     },
     edgeLog(state, { payload }) {
-      const { edgeLogList = [], serialNo, version, runVersion, koni } = state;
+      const { edgeLogList = [], serialNo, version, runVersion } = state;
       if (serialNo === payload.serialNo && version === payload.version && runVersion === payload.runVersion) {
-        const edgeLogs = edgeLogList.filter(edgeLog => edgeLog.edgeId == payload.edgeId);
+        const edgeLogs = edgeLogList.filter(edgeLog => edgeLog.edgeId === payload.edgeId);
         if (edgeLogs > 0) {
           Object.assign(edgeLogs[0], payload);
         } else {
