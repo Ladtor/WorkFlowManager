@@ -15,7 +15,6 @@ import { locales } from '@/utils/utils';
 import styles from './index.less';
 
 const format = locales('editor');
-// const format = (a) => a;
 const START_ID = '00000000';
 const RESULT_ID = 'ffffffff';
 const LOCK_ID_LIST = [START_ID, RESULT_ID];
@@ -74,14 +73,6 @@ const KoniPage = ({ dispatch, editor, setting }) => {
       }
     }
     return true;
-  };
-
-  const onEvent = (name, ...args) => {
-    // console.log(name, args);
-  };
-
-  const handleAfterChange = (ev) => {
-    console.log(ev);
   };
 
   const save = (name, graph) => {
@@ -185,24 +176,6 @@ const KoniPage = ({ dispatch, editor, setting }) => {
           <Koni
             className={styles.koni}
             data={data}
-            onMouseWheel={onEvent.bind(this, 'onMouseWheel')}
-            onKeyDown={onEvent.bind(this, 'onKeyDown')}
-            onKeyUp={onEvent.bind(this, 'onKeyUp')}
-            onBeforeChange={onEvent.bind(this, 'onBeforeChange')}
-            onAfterChange={onEvent.bind(this, 'onAfterChange')}
-            onBeforeChangeSize={onEvent.bind(this, 'onBeforeChangeSize')}
-            onAfterChangeSize={onEvent.bind(this, 'onAfterChangeSize')}
-            onBeforeViewportChange={onEvent.bind(this, 'onBeforeViewportChange')}
-            onAfterViewportChange={onEvent.bind(this, 'onAfterViewportChange')}
-            onBeforeItemActived={onEvent.bind(this, 'onBeforeItemActived')}
-            onAfterItemActived={onEvent.bind(this, 'onAfterItemActived')}
-            onBeforeItemInactivated={onEvent.bind(this, 'onBeforeItemInactivated')}
-            onAfterItemInactivated={onEvent.bind(this, 'onAfterItemInactivated')}
-            onBeforeItemSelected={onEvent.bind(this, 'onBeforeItemSelected')}
-            // onAfterItemSelected={onEvent.bind(this, "onAfterItemSelected")}
-            onBeforeItemUnselected={onEvent.bind(this, 'onBeforeItemUnselected')}
-            // onAfterItemUnselected={onEvent.bind(this, "onAfterItemUnselected")}
-            onKeyUpEditLabel={onEvent.bind(this, 'onKeyUpEditLabel')}
             onAfterItemSelected={handleAfterItemSelected}
             onAfterItemUnselected={handleAfterItemUnselected}
           />
